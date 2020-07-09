@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: demo
+  redis:
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+    sentinel:
+      master: mymaster
+      nodes: 172.16.60.5:26379,172.16.60.6:26379,172.16.60.7:26379
+    database: 0
+# 应用服务 WEB 访问端口
+server:
+  port: 8080
+
+
+
