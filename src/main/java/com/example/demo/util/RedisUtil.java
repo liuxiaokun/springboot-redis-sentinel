@@ -9,21 +9,21 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author Administrator
- * @date 2019/03/19
+ * @author liuxiaokun
+ * @date 2020年7月10日
  */
 public class RedisUtil {
 
-    private RedisTemplate<String, Object> redisTemplate;
-    public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    public RedisUtil(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
-    //=============================common============================
     /**
      * 指定缓存失效时间
      * @param key 键
      * @param time 时间(秒)
-     * @return
+     * @return boolean
      */
     public boolean expire(String key,long time){
         try {

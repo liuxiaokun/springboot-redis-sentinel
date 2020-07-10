@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.util.RedisUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,50 +9,52 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
- * @author Administrator
- * @date 2019/03/19
+ * @author liuxiaokun
+ * @date 2020年7月10日
  */
 @RestController
 @RequestMapping("/redis-sentinel")
 public class RedisTestController {
 
-    @Autowired
-    private RedisUtil redisUtil;
+    private final RedisUtil redisUtil;
 
-    @RequestMapping(value = "/test",method = RequestMethod.GET)
-    public void postTest(){
+    public RedisTestController(RedisUtil redisUtil) {
+        this.redisUtil = redisUtil;
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public void postTest() {
         testCommon();
         //testHash();
         //testSet();
         //testList();
     }
 
-    private void testCommon(){
+    private void testCommon() {
         System.out.println("================================测试普通缓存==================");
         System.out.println("普通缓存,存入 key01 值为value01 到期时间为5秒");
-        redisUtil.set("key01","value01",5);
-        System.out.println("从redis获取key01的值："+redisUtil.get("key01"));
-        System.out.println("到期时间为："+redisUtil.getExpire("key01"));
+        redisUtil.set("key01", "value01", 5);
+        System.out.println("从redis获取key01的值：" + redisUtil.get("key01"));
+        System.out.println("到期时间为：" + redisUtil.getExpire("key01"));
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("6秒后从redis获取key01的值："+redisUtil.get("key01"));
-        System.out.println("key01是否存在:"+redisUtil.hasKey("key01"));
+        System.out.println("6秒后从redis获取key01的值：" + redisUtil.get("key01"));
+        System.out.println("key01是否存在:" + redisUtil.hasKey("key01"));
     }
 
-    private void testHash(){
+    private void testHash() {
         System.out.println("================================测试Hash缓存==================");
         System.out.println("hash缓存,存入 key03 值为{\"name\":\"zhangsan\",\"sex\":\"man\"}");
-        Map<String,Object> map = new HashMap<>();
-        map.put("name","zhangsan");
-        map.put("sex","man");
-        redisUtil.hmset("key03",map);
-        System.out.println("key03:"+redisUtil.hget("key03","name")+"  "+redisUtil.hget("key03","sex"));
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", "zhangsan");
+        map.put("sex", "man");
+        redisUtil.hmset("key03", map);
+        System.out.println("key03:" + redisUtil.hget("key03", "name") + "  " + redisUtil.hget("key03", "sex"));
         redisUtil.del("key03");
     }
 
@@ -73,38 +74,38 @@ public class RedisTestController {
 
     }*/
 
-    private void testList(){
+    private void testList() {
         System.out.println("================================测试List缓存==================");
         System.out.println("List缓存key05");
-        redisUtil.lSet("key05", Arrays.asList("aa","bb","cc","dd","ee","ff","gg"));
+        redisUtil.lSet("key05", Arrays.asList("aa", "bb", "cc", "dd", "ee", "ff", "gg"));
         System.out.println("List缓存key06");
-        redisUtil.lSet("key06","11");
-        redisUtil.lSet("key06","22");
-        redisUtil.lSet("key06","33");
-        redisUtil.lSet("key06","44");
-        redisUtil.lSet("key06","55");
-        redisUtil.lSet("key06","66");
-        redisUtil.lSet("key06","77");
+        redisUtil.lSet("key06", "11");
+        redisUtil.lSet("key06", "22");
+        redisUtil.lSet("key06", "33");
+        redisUtil.lSet("key06", "44");
+        redisUtil.lSet("key06", "55");
+        redisUtil.lSet("key06", "66");
+        redisUtil.lSet("key06", "77");
         System.out.println("以上两种方式的缓存是有区别的，注意看下面的长度");
-        System.out.println("输出key05的长度："+redisUtil.lGetListSize("key05"));
-        List<Object> list = redisUtil.lGet("key05",0,redisUtil.lGetListSize("key05"));
+        System.out.println("输出key05的长度：" + redisUtil.lGetListSize("key05"));
+        List<Object> list = redisUtil.lGet("key05", 0, redisUtil.lGetListSize("key05"));
         System.out.println("输出key05的所有元素");
-        for(Object str:list){
+        for (Object str : list) {
             System.out.println(str);
         }
-        System.out.println("输出key06的长度："+redisUtil.lGetListSize("key06"));
-        List<Object> list1 = redisUtil.lGet("key06",0,redisUtil.lGetListSize("key06"));
+        System.out.println("输出key06的长度：" + redisUtil.lGetListSize("key06"));
+        List<Object> list1 = redisUtil.lGet("key06", 0, redisUtil.lGetListSize("key06"));
         System.out.println("输出key06的所有元素");
-        for(Object str:list1){
+        for (Object str : list1) {
             System.out.println(str);
         }
 
         System.out.println("删除key06的的55");
-        redisUtil.lRemove("key06",1,"55");
-        List<Object> list2 = redisUtil.lGet("key06",0,redisUtil.lGetListSize("key06"));
-        System.out.println("输出key06的长度："+redisUtil.lGetListSize("key06"));
+        redisUtil.lRemove("key06", 1, "55");
+        List<Object> list2 = redisUtil.lGet("key06", 0, redisUtil.lGetListSize("key06"));
+        System.out.println("输出key06的长度：" + redisUtil.lGetListSize("key06"));
         System.out.println("输出key06的所有元素");
-        for(Object str:list2){
+        for (Object str : list2) {
             System.out.println(str);
         }
 
