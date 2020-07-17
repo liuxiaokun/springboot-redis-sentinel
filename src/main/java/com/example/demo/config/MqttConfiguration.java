@@ -1,5 +1,6 @@
 package com.example.demo.config;
 
+import com.example.demo.mqtt.handler.MyMqttPahoMessageHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +46,8 @@ public class MqttConfiguration {
     @Bean
     @ServiceActivator(inputChannel = "mqttOutboundChannel")
     public MessageHandler mqttOutbound() {
-        MqttPahoMessageHandler messageHandler =
-                new MqttPahoMessageHandler(mqttProperties.getClientId(), mqttClientFactory());
+        MyMqttPahoMessageHandler messageHandler =
+                new MyMqttPahoMessageHandler(mqttProperties.getClientId(), mqttClientFactory());
         messageHandler.setAsync(true);
         messageHandler.setDefaultTopic(mqttProperties.getDefaultTopic());
         return messageHandler;
