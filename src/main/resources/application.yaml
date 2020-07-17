@@ -16,5 +16,12 @@ spring:
 server:
   port: 8080
 
+mqtt:
+  username: emqx
+  password: public
+  host-url: tcp://192.168.1.201:1883
+  client-id: spring-boot-client
+  default-topic: topic
+
 
 
