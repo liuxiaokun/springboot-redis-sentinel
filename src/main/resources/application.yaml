@@ -14,7 +14,7 @@ spring:
     database: 0
 # 应用服务 WEB 访问端口
 server:
-  port: 8080
+  port: 8081
 
 mqtt:
   username: emqx
@@ -22,6 +22,12 @@ mqtt:
   host-url: tcp://192.168.1.201:1883
   client-id: spring-boot-client
   default-topic: topic
+
+hadoop:
+  driver-class-name: org.apache.phoenix.jdbc.PhoenixDriver
+  url: jdbc:phoenix:172.16.60.5:2181:/hbase
+  username:
+  password:
 
 
 
